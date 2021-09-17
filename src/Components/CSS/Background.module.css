@@ -1,0 +1,43 @@
+.backgroundImg{
+    position: 'absolute';
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    background: linear-gradient(5deg,
+                        rgba(7, 6, 20, 1) 5%,
+                        rgba(16, 25, 60, 1) 35%,
+                        rgba(10, 75, 59, 1) 50%,
+                        rgba(16, 25, 60, 1) 65%,
+                        rgba(7, 6, 20, 1) 95%);
+    overflow: hidden;
+}
+
+.stars, .clouds {
+	position:absolute;
+	display:block;
+	top:0; bottom:0;
+	left:0; right:0;
+	width:100%; height:100%;
+}
+
+.stars {
+	z-index: 0;
+	background: rgba(228, 212, 212, 0) url('https://image.ibb.co/mjnygo/stars.png') repeat top center;
+}
+
+.clouds{
+	z-index: 0;
+  /* background:transparent url('https://image.ibb.co/bT4N7T/clouds.png') repeat top center; */
+  background:rgba(51, 51, 51, 0.274) url('/src/images/clouds1.png') repeat;
+  /* background-position: 0 -200px; */
+  background-position-y: -200%;
+  opacity: 0.2;
+	animation: move-clouds-back 200s linear infinite;
+}
+
+@keyframes move-clouds-back {
+	from {background-position:0 0;}
+	to {background-position:10000px 0;}
+}

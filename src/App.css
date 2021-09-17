@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+
+*{
+  font-family: 'Balsamiq Sans', cursive;
+  /* color: #ddd; */
+  margin: 0;
+  padding: 0;
+}
+
+.info-pannel{
+  position: absolute;
+	top: 50%; 
+  right: 50%;
+  transform: translate(50%,-50%);
+	width: 500px; min-height: 250px;
+	padding: 0.5rem;
+	border: 1px solid #a3a0a080;
+	border-radius: 10px;
+	background: #1d232973;
+  font-size: 20px;
+	text-align: center;
+	box-shadow: -1px -1px 10px #361a1a4d inset;
+  backdrop-filter: blur(5px);
+  color: #ddd;
+}
+
+.players-name{
+  font-size: 30px;
+  color: rgb(202, 200, 200);
+  padding: 30px;
+}
+
+.players-name input[type=text]{
+  background: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 3px solid #8b8282;
+  font-size: 20px;
+  color: #ddd;
+  letter-spacing: 1px;
+}
+
+.players-name button{
+  border-radius: 4px;
+  cursor: pointer;
+  background: rgb(236, 93, 68);
+  color: #eceff1;
+  padding: 8px 13px;
+  border: none;
+  font-size: 18px;
+  margin-top: 9px;
+  margin-left: 20px;
+}
+
+.notification{
+  animation: notify 0.7s ease-in-out;
+}
+
+@keyframes notify {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
