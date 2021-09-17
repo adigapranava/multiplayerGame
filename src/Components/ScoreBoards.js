@@ -7,9 +7,9 @@ export default function ScoreBoards(props) {
         var temp = []
         for (let i = 1; i <= 3; i++) {
             if(i <= count){
-                temp.push(<HiHeart style={{color: 'tomato'}}/>)
+                temp.push(<HiHeart style={{color: 'tomato'}} key={i}/>)
             }else{
-                temp.push(<HiOutlineHeart style={{color: 'tomato'}}/>)
+                temp.push(<HiOutlineHeart style={{color: 'tomato'}} key={i}/>)
             }
         }
         return temp;
@@ -18,15 +18,15 @@ export default function ScoreBoards(props) {
     return (
         <div>
             <div className={styles.scoreBoard1} >
-                <h3 className={styles.h3}>{props.player}</h3>
+                <h3 className={styles.h3}>{props.left}</h3>
                 <div className={styles.hearts}>
-                    {getHearts(props.playerHeart)}
+                    {getHearts(props.leftHeart)}
                 </div>
             </div>
             <div className={styles.scoreBoard2} >
-                <h3 className={styles.h3}>{props.opponent}</h3>
+                <h3 className={styles.h3}>{props.right}</h3>
                 <div className={styles.hearts}>
-                    {getHearts(props.opponentHeart)}
+                    {getHearts(props.rightHeart)}
                 </div>
             </div>
         </div>

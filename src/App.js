@@ -8,14 +8,12 @@ import { useEffect, useState } from 'react';
 
 function App() {
   // True => Left || False => Right
-  const [postiton, setPosition] = useState(true);
+  const [playerPosition, setPlayerPosition] = useState(true)
   const [player, setPlayer] = useState({name: "",hearts: 3})
   const [opponent, setOpponent] = useState({name: "",hearts: 3})
 
   const [notification, setNotification] = useState()
   const [room, setRoom] = useState("");
-
-  const [foundPartner, setFoundPartner] = useState(false);
 
   const [started, setStarted] = useState(false)
   const [socket, setSocket] = useState()
@@ -30,16 +28,16 @@ function App() {
   useEffect(() => {
     if(socket){
       socket.on("opponentLeft", ()=>{
-        setRoom()
-        setStarted()
-        setOpponent({...opponent, name:""})
+        initGame();
         addNotification("Opponent Left :(")
       })
 
       socket.on("readyToPlay", (roomObj)=>{
-        console.log(roomObj);
         setOpponent({...opponent, name: roomObj.opponent})
-        setPosition(roomObj.yourPosition)
+        console.log("Your position: ", playerPosition);
+        console.log("came position: ", roomObj.yourPosition);
+        setPlayerPosition(roomObj.yourPosition)
+        console.log("Your position: ", playerPosition);
       })
 
       socket.on("startToPlay", ()=>{
@@ -49,11 +47,17 @@ function App() {
   }, [socket])
 
 
+  const initGame = () =>{
+    setRoom()
+    setStarted()
+    setPlayerPosition(true)
+    setOpponent({...opponent, name:""})
+  }
+
   const addNotification = (notificationText) =>{
       setNotification(notificationText)
       setTimeout(() => {setNotification()}, 5000)
   }
-
 
   return (
       <>
@@ -62,6 +66,7 @@ function App() {
         {/* if GAME STARTED then show GameSceen else Before Start Screen*/}
         {started ?
           <GameScreen 
+            playerPosition={playerPosition}
             player={player}
             opponent={opponent}
           />:

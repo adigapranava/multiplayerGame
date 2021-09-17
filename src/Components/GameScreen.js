@@ -1,15 +1,21 @@
 import React from 'react'
-import ScoreBoards from './ScoreBoards'
+import LeftSidePlayer from './LeftSidePlayer'
+import RightSidePlayer from './RightSidePlayer'
 
-function GameScreen({player, opponent}) {
+function GameScreen({playerPosition, player, opponent}) {
     return (
         <>
-            <ScoreBoards 
-                player={player.name}
-                opponent={opponent.name}
-                playerHeart={player.hearts}
-                opponentHeart={opponent.hearts}
-                />
+        {playerPosition?
+            <LeftSidePlayer 
+                player={player}
+                opponent={opponent}
+            />
+            :
+            <RightSidePlayer
+                player={player}
+                opponent={opponent}
+            />
+                }
         </>
     )
 }

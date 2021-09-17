@@ -71,8 +71,10 @@ const joinToRoom = (socket, room) => {
                 console.log("AAAAA: ", rm.members[0].username);
                 // Start game after 5 mins
                 setTimeout(()=>{
-                    socket.to(rm.id).emit("startToPlay")
-                    rm.members[1].emit("startToPlay")
+                    if(rm.members.length == 2 ){
+                        socket.to(rm.id).emit("startToPlay")
+                        rm.members[1].emit("startToPlay")
+                    }
                     }, 5000)
             }
         }
@@ -88,6 +90,7 @@ const joinToRoom = (socket, room) => {
         activeRooms.push(roomObj)
         socket.join(room)
     }
+    console.log(activeRooms);
     return roomObj
 }
 
@@ -117,6 +120,7 @@ const exitTheRoom = (socket) => {
         if(rm.members.length > 0)
             return rm;
     })
+    console.log(activeRooms);
 }
 
 io.on('connection', (socket) => {
