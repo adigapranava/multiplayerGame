@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 
 export default function InfoPannel({ player, setPlayer, socket ,room, setRoom }) {
-    const [name, setName] = useState(player);
+    const [name, setName] = useState(player.name);
     const [error, setError] = useState();
     const [roomText, setRoomText] = useState("");
     const [createRoom, setCreateRoom] = useState(false);
@@ -11,7 +11,7 @@ export default function InfoPannel({ player, setPlayer, socket ,room, setRoom })
 
     const handelForm = (e) => {
         e.preventDefault();
-        setPlayer(name)
+        setPlayer({ ...player,  name: name})
     }
 
     const handelForm2 = (e) => {
@@ -38,7 +38,7 @@ export default function InfoPannel({ player, setPlayer, socket ,room, setRoom })
             <div className="info-pannel">
                     <h2 style={{letterSpacing : "1px", padding: "8px 0px"}}>Hola!!👋🏻</h2>
                     <hr />
-                    {player ? 
+                    {player.name ? 
                         createRoom ?
                             (
                                 <div className="players-name">

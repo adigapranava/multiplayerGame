@@ -67,6 +67,13 @@ const joinToRoom = (socket, room) => {
                                     opponent: rm.members[0].username,
                                     yourPosition: false //RIGHT
                                 })
+
+                console.log("AAAAA: ", rm.members[0].username);
+                // Start game after 5 mins
+                setTimeout(()=>{
+                    socket.to(rm.id).emit("startToPlay")
+                    rm.members[1].emit("startToPlay")
+                    }, 5000)
             }
         }
         return rm
