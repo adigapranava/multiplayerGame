@@ -33,8 +33,9 @@
   background:rgba(51, 51, 51, 0.274) url('/src/images/clouds1.png') repeat;
   /* background-position: 0 -200px; */
   background-position-y: -200%;
+  background-size: 70%;
   opacity: 0.2;
-	animation: move-clouds-back 200s linear infinite;
+	animation: move-clouds-back 800s linear infinite;
 }
 
 @keyframes move-clouds-back {

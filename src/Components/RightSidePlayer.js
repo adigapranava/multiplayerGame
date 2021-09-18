@@ -1,7 +1,9 @@
 import React from 'react'
 import ScoreBoards from './ScoreBoards'
+import RightGameBoard from './RightGameBoard'
 
-function RightSidePlayer({player, opponent}) {
+
+function RightSidePlayer({player, opponent, setPlayer, setOpponent,socket, started}) {
     return (
         <>
            <ScoreBoards 
@@ -10,6 +12,12 @@ function RightSidePlayer({player, opponent}) {
                 rightHeart={player.hearts}
                 leftHeart={opponent.hearts}
                 /> 
+            <RightGameBoard 
+                setPlayer={setPlayer}
+                setOpponent={setOpponent}
+                socket={socket}
+                started={started}
+            />
         </>
     )
 }

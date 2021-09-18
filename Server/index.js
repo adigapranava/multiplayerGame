@@ -68,7 +68,6 @@ const joinToRoom = (socket, room) => {
                                     yourPosition: false //RIGHT
                                 })
 
-                console.log("AAAAA: ", rm.members[0].username);
                 // Start game after 5 mins
                 setTimeout(()=>{
                     if(rm.members.length == 2 ){
@@ -110,6 +109,8 @@ const exitTheRoom = (socket) => {
             // notify other player that user left
             if(rm.members.length > 0){
                 rm.members[0].emit("opponentLeft")
+                rm.members[0].leave(rm.id)
+                rm.members.pop()
             }
         }
         return rm

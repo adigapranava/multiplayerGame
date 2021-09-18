@@ -1,0 +1,50 @@
+.gameBoard{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#mySpaceShip{
+    background-image: url("../../images/hero1.png");
+    /* background-color: aqua; */
+    position: absolute;
+    z-index: -1;
+    height: 9vw;
+    width: 10vw;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0px;
+
+    max-width: 200px;
+    max-height: 200px;
+    min-width: 100px;
+    min-height: 100px;    
+
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position-x: 10px;
+    background-position-y: -10px;
+}
+
+#enemySpaceShip{
+    background-image: url("../../images/hero3.png");
+    /* background-color: aqua; */
+    position: absolute;
+    z-index: -1;
+    height: 9vw;
+    width: 10vw;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+
+    max-width: 200px;
+    max-height: 200px;
+    min-width: 100px;
+    min-height: 100px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position-x: -14px;
+    background-position-y: -10px;
+}

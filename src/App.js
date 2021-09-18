@@ -69,6 +69,10 @@ function App() {
             playerPosition={playerPosition}
             player={player}
             opponent={opponent}
+            setPlayer={setPlayer}
+            setOpponent={setOpponent}
+            socket={socket}
+            started={started}
           />:
           <BeforeStart 
             player={player}

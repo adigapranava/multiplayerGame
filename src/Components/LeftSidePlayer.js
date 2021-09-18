@@ -1,8 +1,8 @@
 import React from 'react'
 import ScoreBoards from './ScoreBoards'
-import hero1 from '../images/hero1.png'
+import LeftGameBoard from './LeftGameBoard'
 
-function LeftSidePlayer({player, opponent}) {
+function LeftSidePlayer({player, opponent, setPlayer, setOpponent,socket, started}) {
     return (
         <>
             <ScoreBoards 
@@ -11,7 +11,12 @@ function LeftSidePlayer({player, opponent}) {
                 leftHeart={player.hearts}
                 rightHeart={opponent.hearts}
                 />
-            <img src={hero1} />
+            <LeftGameBoard 
+                setPlayer={setPlayer}
+                setOpponent={setOpponent}
+                socket={socket}
+                started={started}
+            />
         </>
     )
 }
