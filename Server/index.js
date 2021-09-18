@@ -89,7 +89,7 @@ const joinToRoom = (socket, room) => {
         activeRooms.push(roomObj)
         socket.join(room)
     }
-    console.log(activeRooms);
+    // console.log(activeRooms);
     return roomObj
 }
 
@@ -121,7 +121,7 @@ const exitTheRoom = (socket) => {
         if(rm.members.length > 0)
             return rm;
     })
-    console.log(activeRooms);
+    // console.log(activeRooms);
 }
 
 io.on('connection', (socket) => {
@@ -147,6 +147,11 @@ io.on('connection', (socket) => {
         }else{
             socket.emit("resultJoiningRoom",{status: false, text: "Invalid Code"})
         }
+    })
+
+    socket.on("iMoved", (keysPressed, room) => {
+        // console.log(keysPressed, room);
+        socket.to(room).emit("heMoved", keysPressed);
     })
 
     socket.on("exitRoom", ()=>{

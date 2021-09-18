@@ -21,6 +21,8 @@ export default function InfoPannel({ player, setPlayer, socket ,room, setRoom })
         socket.on("resultJoiningRoom", (data)=>{
             if(!data.status){
                 setError(data.text)
+            }else{
+                setRoom(roomText)
             }
         })
     }
@@ -79,7 +81,7 @@ export default function InfoPannel({ player, setPlayer, socket ,room, setRoom })
                             Enter Your name
                             <br />
                             <input type="text" name="name" id="name" autoComplete="off" autoFocus="true"
-                                pattern="[A-Za-z]{4,}"
+                                pattern="[A-Za-z ]{4,}"
                                 title="Name should contain atleast 4 alphabets"
                                 value={name} onChange={(e)=>setName(e.target.value)}/>
                             <br />

@@ -3,7 +3,7 @@ import ScoreBoards from './ScoreBoards'
 import RightGameBoard from './RightGameBoard'
 
 
-function RightSidePlayer({player, opponent, setPlayer, setOpponent,socket, started}) {
+function RightSidePlayer({player, opponent, setPlayer, setOpponent,socket, started, room}) {
     return (
         <>
            <ScoreBoards 
@@ -17,6 +17,7 @@ function RightSidePlayer({player, opponent, setPlayer, setOpponent,socket, start
                 setOpponent={setOpponent}
                 socket={socket}
                 started={started}
+                room={room}
             />
         </>
     )

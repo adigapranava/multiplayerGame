@@ -73,6 +73,7 @@ function App() {
             setOpponent={setOpponent}
             socket={socket}
             started={started}
+            room={room}
           />:
           <BeforeStart 
             player={player}

@@ -2,7 +2,7 @@ import React from 'react'
 import LeftSidePlayer from './LeftSidePlayer'
 import RightSidePlayer from './RightSidePlayer'
 
-function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,socket, started}) {
+function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,socket, started, room}) {
     return (
         <>
         {playerPosition?
@@ -13,6 +13,7 @@ function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,so
                 setOpponent={setOpponent}
                 socket={socket}
                 started={started}
+                room={room}
             />
             :
             <RightSidePlayer
@@ -22,6 +23,7 @@ function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,so
                 setOpponent={setOpponent}
                 socket={socket}
                 started={started}
+                room={room}
             />
                 }
         </>
