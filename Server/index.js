@@ -155,7 +155,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on("iShot", (room) => {
-        console.log("---------------------------");
         socket.to(room).emit("heShot");
     })
 

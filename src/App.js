@@ -24,10 +24,18 @@ function App() {
         setSocket(io("http://localhost:3001", { transports : ['websocket'] , query:  `name=${player.name}`}));
     }
     // console.log("player.hearts", player.hearts);
+    if (player.hearts == 0) {
+      initGame();
+      addNotification("You lost")
+    }
   }, [player])
 
   useEffect(() => {
     // console.log("opponent.hearts", opponent);
+    if(opponent.hearts == 0){
+      initGame();
+      addNotification("You Won")
+    }
   }, [opponent])
 
   useEffect(() => {
@@ -53,10 +61,12 @@ function App() {
 
 
   const initGame = () =>{
+    socket && socket.emit("exitRoom", room)
     setRoom()
     setStarted()
     setPlayerPosition(true)
-    setOpponent({...opponent, name:""})
+    setOpponent({name:"", hearts: 5})
+    setPlayer({...player, hearts: 5})
   }
 
   const addNotification = (notificationText) =>{
