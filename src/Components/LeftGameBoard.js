@@ -191,7 +191,6 @@ function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started
                     }
                 }
             });
-            // requestAnimationFrame(update)
         }
     }
 
@@ -215,11 +214,6 @@ function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started
             BOARD.appendChild(bullet)
         })
         requestAnimationFrame(update)
-
-        // setInterval(onTimerTick, 33); // 33 milliseconds = ~ 30 frames per sec
-        //     function onTimerTick() {
-        //     // Do stuff.
-        // }
     }, [])
 
     useEffect(() => {

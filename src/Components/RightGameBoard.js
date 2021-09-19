@@ -190,7 +190,6 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
                     }
                 }
             });
-            // requestAnimationFrame(update)
         }
     }
 
