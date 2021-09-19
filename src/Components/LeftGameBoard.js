@@ -16,6 +16,8 @@ function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started
     var otherKeys
 
     const [shoot, setShoot] = useState(false)
+    const [myHearts, setmyHearts] = useState(player.hearts)
+    const [hisHearts, setHisHearts] = useState(opponent.hearts)
     var dummyShot = false;
     const [anyShoots, setAnyShoots] = useState(false)
     const allowedKeyPress = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]
@@ -154,13 +156,7 @@ function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started
                     object.splice(index, 1);
                 }else{
                     if (didBulletHitHim(bullet)) {
-                        // setOpponent({...opponent, hearts: opponent.hearts - 1})
-                        // var p = {...opponent}
-                        // console.log("......",p.hearts);
-                        // p["hearts"] =  player.hearts - 1
-                        // console.log(",,,,,,",p.hearts);
-                        // setOpponent(p)
-
+                        setHisHearts(prevState => prevState - 1)
                         BOARD.removeChild(bullet);
                         object.splice(index, 1);
                     }else{
@@ -175,9 +171,7 @@ function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started
                     object.splice(index, 1);
                 }else{
                     if(didBulletHitMe(bullet)){
-                        // var p = {...player}
-                        // p["hearts"] =  player.hearts - 1
-                        // setPlayer(p)
+                        setmyHearts(prevState => prevState - 1)
                         BOARD.removeChild(bullet);
                         object.splice(index, 1);
                     }else{
@@ -219,6 +213,11 @@ function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started
         if(anyShoots)
             socket.emit("iShot", room)
     }, [shoot])
+
+    useEffect(() => {
+        setOpponent({...opponent, hearts: hisHearts})
+        setPlayer({...player, hearts: myHearts})
+    }, [myHearts, hisHearts])
 
 
     return (

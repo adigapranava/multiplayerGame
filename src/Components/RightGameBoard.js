@@ -16,6 +16,8 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
     var otherKeys
 
     const [shoot, setShoot] = useState(false)
+    const [myHearts, setmyHearts] = useState(player.hearts)
+    const [hisHearts, setHisHearts] = useState(opponent.hearts)
     var dummyShot = false;
     const [anyShoots, setAnyShoots] = useState(false)
     const allowedKeyPress = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]
@@ -154,7 +156,7 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
                     object.splice(index, 1);
                 }else{
                     if (didBulletHitHim(bullet)) {
-                        // setOpponent({...opponent, hearts: opponent.hearts - 1})
+                        setHisHearts(prevState => prevState - 1)
                         BOARD.removeChild(bullet);
                         object.splice(index, 1);
                     }else{
@@ -169,7 +171,7 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
                     object.splice(index, 1);
                 }else{
                     if(didBulletHitMe(bullet)){
-                        // setPlayer({...player, hearts: player.hearts - 1})
+                        setmyHearts(prevState => prevState - 1)
                         BOARD.removeChild(bullet);
                         object.splice(index, 1);
                     }else{
@@ -213,6 +215,11 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
         if(anyShoots)
             socket.emit("iShot", room)
     }, [shoot])
+
+    useEffect(() => {
+        setOpponent({...opponent, hearts: hisHearts})
+        setPlayer({...player, hearts: myHearts})
+    }, [myHearts, hisHearts])
 
     return (
         <div className={styles.gameBoard} id="board">
