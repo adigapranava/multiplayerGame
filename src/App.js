@@ -20,10 +20,15 @@ function App() {
  
   // whn player name is ready then connect to socket
   useEffect(() => {
-    if(player.name){
+    if(player.name && !socket){
         setSocket(io("http://localhost:3001", { transports : ['websocket'] , query:  `name=${player.name}`}));
     }
+    // console.log("player.hearts", player.hearts);
   }, [player])
+
+  useEffect(() => {
+    // console.log("opponent.hearts", opponent);
+  }, [opponent])
 
   useEffect(() => {
     if(socket){
@@ -34,10 +39,10 @@ function App() {
 
       socket.on("readyToPlay", (roomObj)=>{
         setOpponent({...opponent, name: roomObj.opponent})
-        console.log("Your position: ", playerPosition);
-        console.log("came position: ", roomObj.yourPosition);
+        // console.log("Your position: ", playerPosition);
+        // console.log("came position: ", roomObj.yourPosition);
         setPlayerPosition(roomObj.yourPosition)
-        console.log("Your position: ", playerPosition);
+        // console.log("Your position: ", playerPosition);
       })
 
       socket.on("startToPlay", ()=>{

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './CSS/GameLeft.module.css'
 
-function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
+function LeftGameBoard({player, opponent, setPlayer, setOpponent,socket, started, room}) {
     const VEL = 0.7;
     const BULLETS_VEL = 0.75;
     const MAX_BULLETS = 3;
@@ -96,6 +96,28 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         return bullet;
     }
 
+    const didBulletHitMe = (bullet)=>{
+        if(getWidthPersentage(bullet.offsetLeft)  < getWidthPersentage(mySpace.offsetLeft) + getWidthPersentage(mySpace.offsetWidth) 
+                && getWidthPersentage(bullet.offsetLeft) > getWidthPersentage(mySpace.offsetLeft) 
+            && getHeightPersentage(bullet.offsetTop) > getHeightPersentage(mySpace.offsetTop) 
+                && getHeightPersentage(bullet.offsetTop) + getHeightPersentage(bullet.offsetHeight) < getHeightPersentage(mySpace.offsetTop) + getHeightPersentage(mySpace.offsetHeight) ){
+                return true;
+            }else{
+                return false;
+            }
+    }
+
+    const didBulletHitHim = (bullet) =>{
+        if( getWidthPersentage(bullet.offsetLeft) + getWidthPersentage(bullet.offsetWidth) > getWidthPersentage(hisSpace.offsetLeft) 
+                && getWidthPersentage(bullet.offsetLeft) + getWidthPersentage(bullet.offsetWidth) < getWidthPersentage(hisSpace.offsetLeft) + getWidthPersentage(hisSpace.offsetWidth)
+            && getHeightPersentage(bullet.offsetTop) > getHeightPersentage(hisSpace.offsetTop) 
+                && getHeightPersentage(bullet.offsetTop) + getHeightPersentage(bullet.offsetHeight) < getHeightPersentage(hisSpace.offsetTop) + getHeightPersentage(hisSpace.offsetHeight)){
+                return true;
+        }else{
+            return false;
+        }
+    }
+
     const keyDown = (e) =>{
         if(allowedKeyPress.includes(e.key)){
             if(dummyKeysPressed[e.key] === false){
@@ -131,7 +153,19 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
                     BOARD.removeChild(bullet);
                     object.splice(index, 1);
                 }else{
-                    bullet.style.left = getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL + "%";
+                    if (didBulletHitHim(bullet)) {
+                        // setOpponent({...opponent, hearts: opponent.hearts - 1})
+                        // var p = {...opponent}
+                        // console.log("......",p.hearts);
+                        // p["hearts"] =  player.hearts - 1
+                        // console.log(",,,,,,",p.hearts);
+                        // setOpponent(p)
+
+                        BOARD.removeChild(bullet);
+                        object.splice(index, 1);
+                    }else{
+                        bullet.style.left = getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL + "%";
+                    }
                 }
             });
 
@@ -140,7 +174,15 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
                     BOARD.removeChild(bullet);
                     object.splice(index, 1);
                 }else{
-                    bullet.style.left = getWidthPersentage(bullet.offsetLeft) - BULLETS_VEL + "%";
+                    if(didBulletHitMe(bullet)){
+                        // var p = {...player}
+                        // p["hearts"] =  player.hearts - 1
+                        // setPlayer(p)
+                        BOARD.removeChild(bullet);
+                        object.splice(index, 1);
+                    }else{
+                        bullet.style.left = getWidthPersentage(bullet.offsetLeft) - BULLETS_VEL + "%";
+                    }
                 }
             });
             requestAnimationFrame(update)

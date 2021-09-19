@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './CSS/GameRight.module.css'
 
-function RightGameBoard({setPlayer, setOpponent,socket, started, room}) {
+function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, started, room}) {
     const VEL = 0.7;
     const BULLETS_VEL = 0.75;
     const MAX_BULLETS = 3;
@@ -96,6 +96,28 @@ function RightGameBoard({setPlayer, setOpponent,socket, started, room}) {
         return bullet;
     }
 
+    const didBulletHitMe = (bullet)=>{
+        if( getWidthPersentage(bullet.offsetLeft) + getWidthPersentage(bullet.offsetWidth) > getWidthPersentage(mySpace.offsetLeft) 
+                && getWidthPersentage(bullet.offsetLeft) + getWidthPersentage(bullet.offsetWidth) < getWidthPersentage(mySpace.offsetLeft) + getWidthPersentage(mySpace.offsetWidth)
+            && getHeightPersentage(bullet.offsetTop) > getHeightPersentage(mySpace.offsetTop) 
+                && getHeightPersentage(bullet.offsetTop) + getHeightPersentage(bullet.offsetHeight) < getHeightPersentage(mySpace.offsetTop) + getHeightPersentage(mySpace.offsetHeight)){
+                return true;
+        }else{
+            return false;
+        }
+    }
+
+    const didBulletHitHim = (bullet) =>{
+        if(getWidthPersentage(bullet.offsetLeft)  < getWidthPersentage(hisSpace.offsetLeft) + getWidthPersentage(hisSpace.offsetWidth) 
+                && getWidthPersentage(bullet.offsetLeft) > getWidthPersentage(hisSpace.offsetLeft) 
+            && getHeightPersentage(bullet.offsetTop) > getHeightPersentage(hisSpace.offsetTop) 
+                && getHeightPersentage(bullet.offsetTop) + getHeightPersentage(bullet.offsetHeight) < getHeightPersentage(hisSpace.offsetTop) + getHeightPersentage(hisSpace.offsetHeight) ){
+                return true;
+        }else{
+            return false;
+        }
+    }
+
     const keyDown = (e) =>{
         if(allowedKeyPress.includes(e.key)){
             if(dummyKeysPressed[e.key] === false){
@@ -131,7 +153,13 @@ function RightGameBoard({setPlayer, setOpponent,socket, started, room}) {
                     BOARD.removeChild(bullet);
                     object.splice(index, 1);
                 }else{
-                    bullet.style.left = getWidthPersentage(bullet.offsetLeft) - BULLETS_VEL + "%";
+                    if (didBulletHitHim(bullet)) {
+                        // setOpponent({...opponent, hearts: opponent.hearts - 1})
+                        BOARD.removeChild(bullet);
+                        object.splice(index, 1);
+                    }else{
+                        bullet.style.left = getWidthPersentage(bullet.offsetLeft) - BULLETS_VEL + "%";
+                    }
                 }
             });
 
@@ -140,7 +168,13 @@ function RightGameBoard({setPlayer, setOpponent,socket, started, room}) {
                     BOARD.removeChild(bullet);
                     object.splice(index, 1);
                 }else{
-                    bullet.style.left = getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL + "%";
+                    if(didBulletHitMe(bullet)){
+                        // setPlayer({...player, hearts: player.hearts - 1})
+                        BOARD.removeChild(bullet);
+                        object.splice(index, 1);
+                    }else{
+                        bullet.style.left = getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL + "%";
+                    }
                 }
             });
             requestAnimationFrame(update)

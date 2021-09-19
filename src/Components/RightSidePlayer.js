@@ -13,6 +13,8 @@ function RightSidePlayer({player, opponent, setPlayer, setOpponent,socket, start
                 leftHeart={opponent.hearts}
                 /> 
             <RightGameBoard 
+                player={player} 
+                opponent={opponent}
                 setPlayer={setPlayer}
                 setOpponent={setOpponent}
                 socket={socket}
