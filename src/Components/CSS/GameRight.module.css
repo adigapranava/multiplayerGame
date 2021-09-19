@@ -32,7 +32,7 @@
     background-image: url("../../images/hero1.png");
     /* background-color: aqua; */
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     height: 9vw;
     width: 10vw;
     top: 45%;

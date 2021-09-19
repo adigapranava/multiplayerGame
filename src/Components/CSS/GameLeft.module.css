@@ -20,8 +20,7 @@
     max-width: 200px;
     max-height: 200px;
     min-width: 100px;
-    min-height: 100px;    
-
+    min-height: 100px;
     background-repeat: no-repeat;
     background-size: 100%;
     background-position-x: 10px;
@@ -32,7 +31,7 @@
     background-image: url("../../images/hero3.png");
     /* background-color: aqua; */
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     height: 9vw;
     width: 10vw;
     top: 45%;
@@ -42,7 +41,8 @@
     max-width: 200px;
     max-height: 200px;
     min-width: 100px;
-    min-height: 100px;
+    min-height: 100px;    
+
     background-repeat: no-repeat;
     background-size: 100%;
     background-position-x: -14px;

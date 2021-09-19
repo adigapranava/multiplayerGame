@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styles from './CSS/GameRight.module.css'
 
 function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, started, room}) {
-    const VEL = 0.7;
-    const BULLETS_VEL = 0.75;
+    const VEL = 1;
+    const BULLETS_VEL = 1.25;
     const MAX_BULLETS = 3;
     var mySpace;
     var hisSpace;
@@ -22,6 +22,10 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
     const [anyShoots, setAnyShoots] = useState(false)
     const allowedKeyPress = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]
 
+    let lastTimestamp = 0,
+    maxFPS = 60,
+    timestep = 1000 / maxFPS;
+
     const getWidthPersentage = (val)=>{
         return val / document.documentElement.clientWidth * 100
     }
@@ -34,25 +38,25 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
         // LEFT
         if (dummyKeysPressed["ArrowLeft"] && getWidthPersentage(mySpace.offsetLeft) - VEL > 51) {
             // console.log("l");
-            mySpace.style.left = getWidthPersentage(mySpace.offsetLeft) - VEL +"%"
+            mySpace.style.left = (getWidthPersentage(mySpace.offsetLeft) - VEL) + "%"
         }
 
         //RIGHT        
         if (dummyKeysPressed["ArrowRight"] && getWidthPersentage(mySpace.offsetLeft) + VEL + getWidthPersentage(mySpace.offsetWidth) < 100) {
             // console.log("r");
-            mySpace.style.left = getWidthPersentage(mySpace.offsetLeft) + VEL +"%"
+            mySpace.style.left = (getWidthPersentage(mySpace.offsetLeft) + VEL) + "%"
         }
         
         // UP
         if (dummyKeysPressed["ArrowUp"] && getHeightPersentage(mySpace.offsetTop) - VEL > 0) {
             // console.log("u");
-            mySpace.style.top = getHeightPersentage(mySpace.offsetTop) - VEL +"%"
+            mySpace.style.top = (getHeightPersentage(mySpace.offsetTop) - VEL) + "%"
         }
         
         // DOWN
         if(dummyKeysPressed["ArrowDown"] && getHeightPersentage(mySpace.offsetTop) + VEL + getHeightPersentage(mySpace.offsetHeight) < 100) {
             // console.log("d");
-            mySpace.style.top = getHeightPersentage(mySpace.offsetTop) + VEL +"%"
+            mySpace.style.top = (getHeightPersentage(mySpace.offsetTop) + VEL) + "%"
         }
     }
 
@@ -60,25 +64,25 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
         // LEFT
         if (otherKeys["ArrowLeft"] && getWidthPersentage(hisSpace.offsetLeft) - VEL > 0) {
             // console.log("l");
-            hisSpace.style.left = getWidthPersentage(hisSpace.offsetLeft) - VEL +"%"
+            hisSpace.style.left = (getWidthPersentage(hisSpace.offsetLeft) - VEL) + "%"
         }
         
         // RIGHT
         if (otherKeys["ArrowRight"] && getWidthPersentage(hisSpace.offsetLeft) + VEL + getWidthPersentage(hisSpace.offsetWidth) < 51) {
             // console.log("r");
-            hisSpace.style.left = getWidthPersentage(hisSpace.offsetLeft) + VEL +"%"
+            hisSpace.style.left = (getWidthPersentage(hisSpace.offsetLeft) + VEL) + "%"
         }
         
         // UP
         if (otherKeys["ArrowUp"] && getHeightPersentage(hisSpace.offsetTop) - VEL > 0) {
             // console.log("u");
-            hisSpace.style.top = getHeightPersentage(hisSpace.offsetTop) - VEL +"%"
+            hisSpace.style.top = (getHeightPersentage(hisSpace.offsetTop) - VEL) + "%"
         }
         
         // DOWN
         if(otherKeys["ArrowDown"] && getHeightPersentage(hisSpace.offsetTop) + VEL + getHeightPersentage(hisSpace.offsetHeight) < 100) {
             // console.log("d");
-            hisSpace.style.top = getHeightPersentage(hisSpace.offsetTop) + VEL +"%"
+            hisSpace.style.top = (getHeightPersentage(hisSpace.offsetTop) + VEL) + "%"
         }
     }
 
@@ -145,7 +149,14 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
         }
     }
 
-    const update = ()=>{
+    const update = (timestamp)=>{
+        window.requestAnimationFrame(update);
+
+        // skip if timestep ms hasn't passed since last frame
+        if (timestamp - lastTimestamp < timestep) return;
+
+        lastTimestamp = timestamp;
+
         if(started){
             handelMySpaceShipMovement()
             handelOtherSpaceShipMovement()
@@ -179,7 +190,7 @@ function RightGameBoard({player, opponent, setPlayer, setOpponent,socket, starte
                     }
                 }
             });
-            requestAnimationFrame(update)
+            // requestAnimationFrame(update)
         }
     }
 

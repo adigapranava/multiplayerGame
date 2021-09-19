@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 function App() {
   // True => Left || False => Right
   const [playerPosition, setPlayerPosition] = useState(true)
-  const [player, setPlayer] = useState({name: "",hearts: 3})
-  const [opponent, setOpponent] = useState({name: "",hearts: 3})
+  const [player, setPlayer] = useState({name: "",hearts: 5})
+  const [opponent, setOpponent] = useState({name: "",hearts: 5})
 
   const [notification, setNotification] = useState()
   const [room, setRoom] = useState("");

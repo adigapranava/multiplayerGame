@@ -5,7 +5,7 @@ import styles from './CSS/Scoreboard.module.css';
 export default function ScoreBoards(props) {
     const getHearts = (count) =>{
         var temp = []
-        for (let i = 1; i <= 3; i++) {
+        for (let i = 1; i <= 5; i++) {
             if(i <= count){
                 temp.push(<HiHeart style={{color: 'tomato'}} key={i}/>)
             }else{
