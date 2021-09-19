@@ -10,11 +10,11 @@
     background-image: url("../../images/hero3.png");
     /* background-color: aqua; */
     position: absolute;
-    z-index: -1;
+    z-index: 1;
     height: 9vw;
     width: 10vw;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 45%;
+    /* transform: translateY(-50%); */
     right: 0px;
 
     max-width: 200px;
@@ -35,8 +35,8 @@
     z-index: -1;
     height: 9vw;
     width: 10vw;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 45%;
+    /* transform: translateY(-50%); */
     left: 0px;
 
     max-width: 200px;
@@ -47,4 +47,52 @@
     background-size: 100%;
     background-position-x: -14px;
     background-position-y: -10px;
+}
+
+.myBullets{
+     /* background: rgb(180,68,58);
+    background: linear-gradient(254deg, #b4443a 39%, #fdaf1d 88%, #fc5a45 100%);
+    border: 2px solid #b4443a; */
+    background: #004aad;
+    background: linear-gradient(90deg, #004aad 0%, #259bcd 35%, #33ecff 86%, #004aad 100%);
+    border: 2px solid #004aad; 
+    width: 2vh;
+    height: 2vh;
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    animation: bullets2 0.1s alternate ease-in-out infinite;
+}
+
+.enemyBullets{
+   /* background: #b4443a;
+    background: linear-gradient(90deg, #b4443a 39%, #fdaf1d 88%, #fc5a45 100%);
+    border: 2px solid #b4443a; */
+    background: #004aad;
+    background: linear-gradient(90deg, #004aad 0%, #259bcd 35%, #33ecff 86%, #004aad 100%);
+    border: 2px solid #004aad; 
+    width: 2vh;
+    height: 2vh;
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+    animation: bullets1 0.1s alternate ease-in-out  infinite;
+}
+
+@keyframes bullets1 {
+    0%{
+        box-shadow: -10px 0px 10px #33cfff;
+    }
+    100%{
+        box-shadow: -3px 0px 2px #33ffbb;
+    }
+}
+
+@keyframes bullets2 {
+    0%{
+        box-shadow: 10px 0px 10px #33cfff;
+    }
+    100%{
+        box-shadow: 3px 0px 2px #33ffbb;
+    }
 }

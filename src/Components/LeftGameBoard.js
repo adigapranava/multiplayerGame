@@ -3,12 +3,20 @@ import styles from './CSS/GameLeft.module.css'
 
 function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
     const VEL = 0.7;
+    const BULLETS_VEL = 0.75;
+    const MAX_BULLETS = 3;
     var mySpace;
     var hisSpace;
+    var BOARD;
+    var my_bullets = []
+    var other_bullets = []
 
     const [keysPressed, setKeysPressed] = useState({ArrowLeft: false, ArrowRight: false, ArrowUp: false, ArrowDown: false})
     var dummyKeysPressed = {...keysPressed}
     var otherKeys
+
+    const [shoot, setShoot] = useState(false)
+    var dummyShot = false;
     const allowedKeyPress = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]
 
     const getWidthPersentage = (val)=>{
@@ -34,13 +42,13 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         }
         
         // UP
-        if (dummyKeysPressed["ArrowUp"] && getHeightPersentage(mySpace.offsetTop) - VEL - getHeightPersentage(mySpace.offsetHeight) / 2 > 0) {
+        if (dummyKeysPressed["ArrowUp"] && getHeightPersentage(mySpace.offsetTop) - VEL > 0) {
             // console.log("u");
             mySpace.style.top = getHeightPersentage(mySpace.offsetTop) - VEL +"%"
         }
         
         // DOWN
-        if(dummyKeysPressed["ArrowDown"] && getHeightPersentage(mySpace.offsetTop) + VEL + getHeightPersentage(mySpace.offsetHeight) - getHeightPersentage(mySpace.offsetHeight) / 2  < 100) {
+        if(dummyKeysPressed["ArrowDown"] && getHeightPersentage(mySpace.offsetTop) + VEL + getHeightPersentage(mySpace.offsetHeight) < 100) {
             // console.log("d");
             mySpace.style.top = getHeightPersentage(mySpace.offsetTop) + VEL +"%"
         }
@@ -60,16 +68,24 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         }
         
         // UP
-        if (otherKeys["ArrowUp"] && getHeightPersentage(hisSpace.offsetTop) - VEL - getHeightPersentage(hisSpace.offsetHeight / 2) > 0) {
+        if (otherKeys["ArrowUp"] && getHeightPersentage(hisSpace.offsetTop) - VEL > 0) {
             // console.log("u");
             hisSpace.style.top = getHeightPersentage(hisSpace.offsetTop) - VEL +"%"
         }
         
         // DOWN
-        if(otherKeys["ArrowDown"] && getHeightPersentage(hisSpace.offsetTop) + VEL + getHeightPersentage(hisSpace.offsetHeight) - getHeightPersentage( hisSpace.offsetHeight / 2)  < 100) {
+        if(otherKeys["ArrowDown"] && getHeightPersentage(hisSpace.offsetTop) + VEL + getHeightPersentage(hisSpace.offsetHeight) < 100) {
             // console.log("d");
             hisSpace.style.top = getHeightPersentage(hisSpace.offsetTop) + VEL +"%"
         }
+    }
+
+    const createMyBullet = () =>{
+        const bullet = document.createElement("div")
+        bullet.setAttribute("class", styles.myBullets)
+        bullet.style.left = getWidthPersentage(mySpace.offsetLeft) + getWidthPersentage(mySpace.offsetWidth) - 2 + "%"
+        bullet.style.top = getHeightPersentage(mySpace.offsetTop) + getHeightPersentage(mySpace.offsetHeight) / 2 - 2 + "%"
+        return bullet;
     }
 
    const keyDown = (e) =>{
@@ -78,6 +94,12 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
                 dummyKeysPressed = {...keysPressed, [e.key]: true}
                 setKeysPressed(dummyKeysPressed)
            }
+        }else if(e.code === "Space" && dummyShot === false && my_bullets.length < MAX_BULLETS){
+            dummyShot = true;
+            setShoot(prevState => !prevState)
+            var bullet = createMyBullet()
+            my_bullets.push(bullet)
+            BOARD.appendChild(bullet)
         }
    }
 
@@ -85,6 +107,8 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         if(allowedKeyPress.includes(e.key)){
             dummyKeysPressed = {...keysPressed, [e.key]: false}
            setKeysPressed(dummyKeysPressed)
+        }else if(e.code === "Space"){
+            dummyShot = false
         }
     }
 
@@ -92,6 +116,14 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         if(started){
             handelMySpaceShipMovement()
             handelOtherSpaceShipMovement()            
+            my_bullets.forEach((bullet, index, object) => {
+                if(getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL > 99){
+                    BOARD.removeChild(bullet);
+                    object.splice(index, 1);
+                }else{
+                    bullet.style.left = getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL + "%";
+                }
+            });
             requestAnimationFrame(update)
         }
     }
@@ -101,23 +133,28 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
 
         mySpace = document.getElementById(styles.mySpaceShip)
         hisSpace = document.getElementById(styles.enemySpaceShip)
+        BOARD = document.getElementById("board")
         
         document.addEventListener("keydown", keyDown)
         document.addEventListener("keyup", keyUp)
 
-        socket.on("heMoved", (movedKeys) => {
-            otherKeys = movedKeys
-        })
+        // socket.on("heMoved", (movedKeys) => {
+        //     otherKeys = movedKeys
+        // })
         requestAnimationFrame(update)
     }, [])
 
     useEffect(() => {
-        socket.emit("iMoved", keysPressed, room);
+        // socket.emit("iMoved", keysPressed, room);
     }, [keysPressed])
+
+    useEffect(() => {
+        // console.log("SHOT!!", shoot);
+    }, [shoot])
 
 
     return (
-        <div className={styles.gameBoard}>
+        <div className={styles.gameBoard} id="board">
             <div id={styles.mySpaceShip} />
             <div id={styles.enemySpaceShip} />
         </div>
