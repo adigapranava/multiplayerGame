@@ -23,7 +23,7 @@
 .scoreBoard2{
 	position: absolute;
 	top: 2%; 
-  right: 2%;
+  	right: 2%;
 	width: 200px; height: 100px;
 	padding: 0.5rem;
 	backdrop-filter: blur(5px);
@@ -31,7 +31,8 @@
 	border-radius: 10px;
 	box-sizing: border-box;
 	background: #1f2c35b4;
-  font-size: 20px;
+  	font-size: 20px;
+	  z-index: 4;
 	text-align: center;
 	box-shadow: -1px -1px 10px #7560604d inset,
 		2px 2px 20px #00000080;

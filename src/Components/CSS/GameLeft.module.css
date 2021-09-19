@@ -71,11 +71,12 @@
     background: #004aad;
     background: linear-gradient(90deg, #004aad 0%, #259bcd 35%, #33ecff 86%, #004aad 100%);
     border: 2px solid #004aad; 
-    width: 3vh;
-    height: 3vh;
-    position: relative;
+    width: 2vh;
+    height: 2vh;
+    position: absolute;
+    z-index: 0;
     border-radius: 50%;
-    animation: bullets2 2s alternate ease-in-out infinite;
+    animation: bullets2 0.1s alternate ease-in-out infinite;
 }
 
 @keyframes bullets1 {

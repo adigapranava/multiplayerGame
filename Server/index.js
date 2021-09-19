@@ -154,6 +154,11 @@ io.on('connection', (socket) => {
         socket.to(room).emit("heMoved", keysPressed);
     })
 
+    socket.on("iShot", (room) => {
+        console.log("---------------------------");
+        socket.to(room).emit("heShot");
+    })
+
     socket.on("exitRoom", ()=>{
         exitTheRoom(socket)
     })

@@ -8,14 +8,14 @@ import { useEffect, useState } from 'react';
 
 function App() {
   // True => Left || False => Right
-  const [playerPosition, setPlayerPosition] = useState(false)
+  const [playerPosition, setPlayerPosition] = useState(true)
   const [player, setPlayer] = useState({name: "",hearts: 3})
   const [opponent, setOpponent] = useState({name: "",hearts: 3})
 
   const [notification, setNotification] = useState()
   const [room, setRoom] = useState("");
 
-  const [started, setStarted] = useState(true)
+  const [started, setStarted] = useState(false)
   const [socket, setSocket] = useState()
  
   // whn player name is ready then connect to socket

@@ -8,8 +8,8 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
     var mySpace;
     var hisSpace;
     var BOARD;
-    var my_bullets = []
-    var other_bullets = []
+    var myBullets = []
+    var hisBullets = []
 
     const [keysPressed, setKeysPressed] = useState({ArrowLeft: false, ArrowRight: false, ArrowUp: false, ArrowDown: false})
     var dummyKeysPressed = {...keysPressed}
@@ -17,6 +17,7 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
 
     const [shoot, setShoot] = useState(false)
     var dummyShot = false;
+    const [anyShoots, setAnyShoots] = useState(false)
     const allowedKeyPress = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]
 
     const getWidthPersentage = (val)=>{
@@ -28,7 +29,6 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
     }
 
     const handelMySpaceShipMovement = () =>{
-
         // LEFT
         if (dummyKeysPressed["ArrowLeft"] && getWidthPersentage(mySpace.offsetLeft) - VEL > 0) {
             // console.log("l");
@@ -88,20 +88,29 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         return bullet;
     }
 
-   const keyDown = (e) =>{
-       if(allowedKeyPress.includes(e.key)){
-           if(dummyKeysPressed[e.key] === false){
-                dummyKeysPressed = {...keysPressed, [e.key]: true}
-                setKeysPressed(dummyKeysPressed)
-           }
-        }else if(e.code === "Space" && dummyShot === false && my_bullets.length < MAX_BULLETS){
+    const createHisBullet = () => {
+        const bullet = document.createElement("div")
+        bullet.setAttribute("class", styles.enemyBullets)
+        bullet.style.left = getWidthPersentage(hisSpace.offsetLeft) - 2 + "%"
+        bullet.style.top = getHeightPersentage(hisSpace.offsetTop) + getHeightPersentage(hisSpace.offsetHeight) / 2 - 2 + "%"
+        return bullet;
+    }
+
+    const keyDown = (e) =>{
+        if(allowedKeyPress.includes(e.key)){
+            if(dummyKeysPressed[e.key] === false){
+                    dummyKeysPressed = {...keysPressed, [e.key]: true}
+                    setKeysPressed(dummyKeysPressed)
+            }
+        }else if(e.code === "Space" && dummyShot === false && myBullets.length < MAX_BULLETS){
             dummyShot = true;
+            setAnyShoots(true)
             setShoot(prevState => !prevState)
             var bullet = createMyBullet()
-            my_bullets.push(bullet)
+            myBullets.push(bullet)
             BOARD.appendChild(bullet)
         }
-   }
+    }
 
     const keyUp = (e) =>{
         if(allowedKeyPress.includes(e.key)){
@@ -115,13 +124,23 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
     const update = ()=>{
         if(started){
             handelMySpaceShipMovement()
-            handelOtherSpaceShipMovement()            
-            my_bullets.forEach((bullet, index, object) => {
-                if(getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL > 99){
+            handelOtherSpaceShipMovement()    
+
+            myBullets.forEach((bullet, index, object) => {
+                if(getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL > 98){
                     BOARD.removeChild(bullet);
                     object.splice(index, 1);
                 }else{
                     bullet.style.left = getWidthPersentage(bullet.offsetLeft) + BULLETS_VEL + "%";
+                }
+            });
+
+            hisBullets.forEach((bullet, index, object) => {
+                if(getWidthPersentage(bullet.offsetLeft) < 0){
+                    BOARD.removeChild(bullet);
+                    object.splice(index, 1);
+                }else{
+                    bullet.style.left = getWidthPersentage(bullet.offsetLeft) - BULLETS_VEL + "%";
                 }
             });
             requestAnimationFrame(update)
@@ -138,18 +157,25 @@ function LeftGameBoard({setPlayer, setOpponent,socket, started, room}) {
         document.addEventListener("keydown", keyDown)
         document.addEventListener("keyup", keyUp)
 
-        // socket.on("heMoved", (movedKeys) => {
-        //     otherKeys = movedKeys
-        // })
+        socket.on("heMoved", (movedKeys) => {
+            otherKeys = movedKeys
+        })
+        socket.on("heShot",()=>{
+            // console.log("SSSS");
+            var bullet = createHisBullet()
+            hisBullets.push(bullet)
+            BOARD.appendChild(bullet)
+        })
         requestAnimationFrame(update)
     }, [])
 
     useEffect(() => {
-        // socket.emit("iMoved", keysPressed, room);
+        socket.emit("iMoved", keysPressed, room);
     }, [keysPressed])
 
     useEffect(() => {
-        // console.log("SHOT!!", shoot);
+        if(anyShoots)
+            socket.emit("iShot", room)
     }, [shoot])
 
 
