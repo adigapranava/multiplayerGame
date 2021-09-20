@@ -12,7 +12,7 @@ function App() {
   const [player, setPlayer] = useState({name: "",hearts: 5})
   const [opponent, setOpponent] = useState({name: "",hearts: 5})
 
-  const [notification, setNotification] = useState()
+  const [notification, setNotification] = useState([])
   const [room, setRoom] = useState("");
 
   const [started, setStarted] = useState(false)
@@ -33,8 +33,8 @@ function App() {
   useEffect(() => {
     // console.log("opponent.hearts", opponent);
     if(opponent.hearts == 0){
-      initGame();
       addNotification("You Won")
+      initGame();
     }
   }, [opponent])
 
@@ -47,10 +47,7 @@ function App() {
 
       socket.on("readyToPlay", (roomObj)=>{
         setOpponent({...opponent, name: roomObj.opponent})
-        // console.log("Your position: ", playerPosition);
-        // console.log("came position: ", roomObj.yourPosition);
         setPlayerPosition(roomObj.yourPosition)
-        // console.log("Your position: ", playerPosition);
       })
 
       socket.on("startToPlay", ()=>{
@@ -61,7 +58,7 @@ function App() {
 
 
   const initGame = () =>{
-    socket && socket.emit("exitRoom", room)
+    // socket && socket.emit("exitRoom", room)
     setRoom()
     setStarted()
     setPlayerPosition(true)
@@ -70,8 +67,13 @@ function App() {
   }
 
   const addNotification = (notificationText) =>{
-      setNotification(notificationText)
-      setTimeout(() => {setNotification()}, 5000)
+      setNotification([...notification,  notificationText])
+
+      setTimeout(() => {
+        setNotification(notification.filter(noti=>{
+          return noti !== notificationText;
+        }))
+      }, 5000)
   }
 
   return (
@@ -89,6 +91,7 @@ function App() {
             socket={socket}
             started={started}
             room={room}
+            initGame={initGame}
           />:
           <BeforeStart 
             player={player}
@@ -102,7 +105,7 @@ function App() {
          }
 
          {/* if any notification */}
-        {notification && <Notification
+        {notification.length > 0 && <Notification
           notification={notification}
           />}
       </>
