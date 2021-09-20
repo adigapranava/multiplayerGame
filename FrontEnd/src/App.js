@@ -21,7 +21,7 @@ function App() {
   // whn player name is ready then connect to socket
   useEffect(() => {
     if(player.name && !socket){
-        setSocket(io("http://localhost:3001", { transports : ['websocket'] , query:  `name=${player.name}`}));
+        setSocket(io(window.location.origin, { transports : ['websocket'] , query:  `name=${player.name}`}));
     }
     // console.log("player.hearts", player.hearts);
     if (player.hearts == 0) {
