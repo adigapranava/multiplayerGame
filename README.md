@@ -14,7 +14,7 @@ Feel free to visit our <a href="https://multiplayer-shooting-game.herokuapp.com/
   ```
 2) Go to the App
   ```
-  cd multiPlayer
+  cd multiplayerGame
   ```
 3) Go to Server
   ```
