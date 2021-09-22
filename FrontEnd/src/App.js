@@ -7,8 +7,11 @@ import io from 'socket.io-client';
 import { useEffect, useState } from 'react';
 
 function App() {
-  // True => Left || False => Right
+  ////////////////////////////////////////  CONSTANTS   ////////////////////////////////////////////////////////
+  
   const [playerPosition, setPlayerPosition] = useState(true)
+  // True => Left || False => Right
+  
   const [player, setPlayer] = useState({name: "",hearts: 5})
   const [opponent, setOpponent] = useState({name: "",hearts: 5})
 
@@ -17,27 +20,40 @@ function App() {
 
   const [started, setStarted] = useState(false)
   const [socket, setSocket] = useState()
- 
-  // whn player name is ready then connect to socket
+  
+  
+  
+  ////////////////////////////////////////// USE EFFECTS //////////////////////////////////////////////////////////
+  
+  // ON CHANGE OF PLAYER OBJECT  RUN THIS
   useEffect(() => {
+    // whn player name is ready then connect to socket pass the PLAYERS NAME
     if(player.name && !socket){
         setSocket(io(window.location.origin, { transports : ['websocket'] , query:  `name=${player.name}`}));
     }
-    // console.log("player.hearts", player.hearts);
+    
+    // When player heart becomes 0 then he lost
     if (player.hearts == 0) {
       initGame();
       addNotification("You lost")
     }
   }, [player])
-
+  
+  //  ON CHANGE OF OPPONENT OBJECT  RUN THIS 
+  
   useEffect(() => {
-    // console.log("opponent.hearts", opponent);
+    // when opponents heart become 0 he won
     if(opponent.hearts == 0){
       addNotification("You Won")
       initGame();
     }
   }, [opponent])
-
+  
+//    when socket is ready listen for
+//            1) other player is ready to play
+//            2) got start signal from Server (both players get at the same time)
+//            3) opponent left
+  
   useEffect(() => {
     if(socket){
       socket.on("opponentLeft", ()=>{
@@ -45,17 +61,22 @@ function App() {
         addNotification("Opponent Left :(")
       })
 
+      // set the opponent name and position alloted by server either LEFT OR RIGHT
       socket.on("readyToPlay", (roomObj)=>{
         setOpponent({...opponent, name: roomObj.opponent})
         setPlayerPosition(roomObj.yourPosition)
       })
-
+      
       socket.on("startToPlay", ()=>{
         setStarted(true);
       })
     }
   }, [socket])
 
+  
+  
+  
+  //////////////////////////////////////////  Functions ///////////////////////////////////////////////////////
 
   const initGame = () =>{
     // socket && socket.emit("exitRoom", room)
@@ -67,8 +88,10 @@ function App() {
   }
 
   const addNotification = (notificationText) =>{
+      // add the notification to the notificationList
       setNotification([...notification,  notificationText])
 
+      // after 5s remove it
       setTimeout(() => {
         setNotification(notification.filter(noti=>{
           return noti !== notificationText;
@@ -80,7 +103,7 @@ function App() {
       <>
         <Background/>
 
-        {/* if GAME STARTED then show GameSceen else Before Start Screen*/}
+        {/* if game STARTED then show GameScreen else Before Start Screen*/}
         {started ?
           <GameScreen 
             playerPosition={playerPosition}
