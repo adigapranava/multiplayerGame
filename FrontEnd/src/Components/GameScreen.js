@@ -6,6 +6,7 @@ function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,so
     return (
         <>
         {playerPosition?
+         // if Players position is LEFT then show <LeftSidePlayer>
             <LeftSidePlayer 
                 player={player}
                 opponent={opponent}
@@ -16,6 +17,7 @@ function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,so
                 room={room}
             />
             :
+                // if Players position is LEFT then show <RightSidePlayer>
             <RightSidePlayer
                 player={player}
                 opponent={opponent}
@@ -27,6 +29,7 @@ function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,so
             />
                 }
             
+                // exit Button 🏃🏻‍♂️
             <div className="exit" 
                 onClick={()=>{socket.emit("exitRoom"); initGame()}}
                 style={
