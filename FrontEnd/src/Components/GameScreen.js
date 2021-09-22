@@ -29,7 +29,7 @@ function GameScreen({playerPosition, player, opponent, setPlayer, setOpponent,so
             />
                 }
             
-                // exit Button 🏃🏻‍♂️
+                // exit Button
             <div className="exit" 
                 onClick={()=>{socket.emit("exitRoom"); initGame()}}
                 style={
